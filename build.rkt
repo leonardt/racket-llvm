@@ -68,7 +68,7 @@
 
 
 (build)
-                                        ;rsync -r . ~/proj/racket/planet/llvm/1.0
+;rsync -r . ~/proj/racket/planet/llvm/1.0
 
 
 
