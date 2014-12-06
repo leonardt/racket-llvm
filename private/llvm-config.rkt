@@ -34,7 +34,8 @@
         path)))
 
 (define (llvm-config flag)
-  (let-values (((process out in err) (subprocess #f #f #f "/usr/bin/env" (llvm-config-path) flag)))
+  (let-values (((process out in err) 
+                (subprocess #f #f #f "/usr/bin/env" (llvm-config-path) flag)))
     (close-output-port in)
     (begin0
         (string-trim (port->string out))
