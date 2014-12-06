@@ -43,27 +43,32 @@
     
     (void)))
 
+(define (llvm-config-path)
+  (let ([path (getenv "LLVM_CONFIG")])
+    (if (not path)
+        "llvm-config"
+        path)))
 
 (define (llvm-config flags)
- (define (remove-blanks lst)
-  (filter (lambda (x) (not (equal? x ""))) lst))
- (remove-blanks
-  (regexp-split " "
-   (let-values (((process out in err) (subprocess #f #f #f "/usr/bin/env" "llvm-config" flags)))
-    (begin0
-     (string-trim-both (port->string out))
-     (close-output-port in)
-     (close-input-port err)
-     (close-input-port out)
-     (subprocess-wait process)
-     (unless (= (subprocess-status process) 0) (error 'llvm-config "Returned non zero exit code for flags: ~a" flags)))))))
+  (define (remove-blanks lst)
+    (filter (lambda (x) (not (equal? x ""))) lst))
+  (remove-blanks
+   (regexp-split " "
+                 (let-values (((process out in err) (subprocess #f #f #f "/usr/bin/env" (llvm-config-path) flags)))
+                   (begin0
+                       (string-trim-both (port->string out))
+                     (close-output-port in)
+                     (close-input-port err)
+                     (close-input-port out)
+                     (subprocess-wait process)
+                     (unless (= (subprocess-status process) 0) (error 'llvm-config "Returned non zero exit code for flags: ~a" flags)))))))
 
 
 
- 
+
 
 (build)
-;rsync -r . ~/proj/racket/planet/llvm/1.0
+                                        ;rsync -r . ~/proj/racket/planet/llvm/1.0
 
 
 

@@ -27,16 +27,22 @@
   (filter (lambda (x) (not (equal? x ""))) lst))
  (remove-blanks (regexp-split " " (llvm-config flag))))
 
+(define (llvm-config-path)
+  (let ([path (getenv "LLVM_CONFIG")])
+    (if (not path)
+        "llvm-config"
+        path)))
+
 (define (llvm-config flag)
- (let-values (((process out in err) (subprocess #f #f #f "/usr/bin/env" "llvm-config" flag)))
-  (close-output-port in)
-  (begin0
-   (string-trim (port->string out))
-   (close-input-port err)
-   (close-input-port out)
-   (subprocess-wait process)
-   (unless (= (subprocess-status process) 0)
-     (error 'llvm-config "Returned non zero exit code for flags: ~a" flag)))))
+  (let-values (((process out in err) (subprocess #f #f #f "/usr/bin/env" (llvm-config-path) flag)))
+    (close-output-port in)
+    (begin0
+        (string-trim (port->string out))
+      (close-input-port err)
+      (close-input-port out)
+      (subprocess-wait process)
+      (unless (= (subprocess-status process) 0)
+        (error 'llvm-config "Returned non zero exit code for flags: ~a" flag)))))
 
 
 
