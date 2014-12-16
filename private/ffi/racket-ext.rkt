@@ -16,6 +16,7 @@
 (define-llvm-racket-unsafe LLVMIsValidTypeIndex (_fun LLVMTypeRef LLVMValueRef -> LLVMBool))
 (define-llvm-racket-unsafe LLVMGetTypeAtIndex (_fun LLVMTypeRef LLVMValueRef -> LLVMTypeRef))
 (define-llvm-racket-unsafe LLVMIsTerminatorInstruction (_fun LLVMValueRef -> LLVMBool))
+(define-llvm-racket-unsafe LLVMOptimizeModule (_fun LLVMModuleRef -> LLVMBool))
 
 
 (define safe:type-at-index
